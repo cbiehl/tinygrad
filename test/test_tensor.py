@@ -810,6 +810,14 @@ class TestTensorMetadata(unittest.TestCase):
     self.assertEqual(len(si.metadata), 1)
     self.assertEqual(si.metadata[0].name, "relu")
 
+  def test_golu(self):
+    x = Tensor.rand(3, requires_grad=True)
+    out = x.golu()
+    self.assertEqual(out.uop.metadata[0].name, "golu")
+    si = out.schedule()[-1]
+    self.assertEqual(len(si.metadata), 1)
+    self.assertEqual(si.metadata[0].name, "golu")
+
   def test_assign(self):
     x = Tensor.empty(10, 10).realize()
     x.assign(Tensor.ones(10, 10).contiguous())
