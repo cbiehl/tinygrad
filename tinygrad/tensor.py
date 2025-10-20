@@ -3619,6 +3619,19 @@ class Tensor(MathTrait):
     """
     return self / (1 + self.abs())
 
+  def golu(self) -> Tensor:
+    """
+    Applies the Gompertz Linear Unit (GoLU) function element-wise.
+
+    - Paper: https://arxiv.org/pdf/2502.03654
+
+    ```python exec="true" source="above" session="tensor" result="python"
+    print(Tensor([-3., -2., -1., 0., 1., 2., 3.]).golu().numpy())
+    ```
+    """
+    # GoLU(x) = x * exp(-exp(-x))
+    return self * (-self.neg().exp()).exp()
+
   # ***** broadcasted elementwise ops *****
   def _broadcast_to(self, new_shape:tuple[sint, ...]) -> Tensor:
     if self.shape == new_shape: return self
