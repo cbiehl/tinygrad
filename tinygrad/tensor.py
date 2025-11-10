@@ -3347,6 +3347,19 @@ class Tensor(OpMixin):
     """
     return self / (1 + self.abs())
 
+  def golu(self) -> Tensor:
+    """
+    Applies the Gompertz Linear Unit (GoLU) function element-wise.
+
+    - Paper: https://arxiv.org/pdf/2502.03654
+
+    ```python exec="true" source="above" session="tensor" result="python"
+    print(Tensor([-3., -2., -1., 0., 1., 2., 3.]).golu().numpy())
+    ```
+    """
+    # GoLU(x) = x * exp(-exp(-x))
+    return self * (-self.neg().exp()).exp()
+
   # ***** broadcasted elementwise ops *****
 
   def _broadcasted(self, y:Tensor|ConstType|UOp, reverse:bool=False, match_dtype:bool=True, backward_cast:bool=True) -> tuple[Tensor, Tensor]:
